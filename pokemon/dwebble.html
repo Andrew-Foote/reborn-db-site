@@ -13,7 +13,10 @@ Dwebble
 
 		<style>
 			
-			
+	.trainer-spoiler {
+		display: none;
+	}
+
 		</style>
 		
 <script>
@@ -45,6 +48,16 @@ Dwebble
 		selectTab(tabs, indexToSelect);
 	}
 
+	function showOrHideTrainerSpoilers(box) {
+		const form = box.dataset.form;
+		const display = box.checked ? 'block' : 'none';
+		const affected = Array.from(document.querySelectorAll(`.trainer-spoiler-${form}`));
+
+		for (const elem of affected) {
+			elem.style.display = display;
+		}
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		let tabLists = Array.from(document.querySelectorAll('.tabs'));
 
@@ -63,6 +76,13 @@ Dwebble
 			} else {
 				selectTab(tabs, 0);
 			}
+		}
+
+		const trainerSpoilerTickboxes = Array.from(document.querySelectorAll('.show-trainer-spoilers'));
+
+		for (const box of trainerSpoilerTickboxes) {
+			showOrHideTrainerSpoilers(box);
+			box.addEventListener('change', () => { showOrHideTrainerSpoilers(box) });
 		}
 	});
 
@@ -145,7 +165,7 @@ Dwebble
 		<div style="display: flex; justify-content: space-between; margin-bottom: 1em">
 			<figure style="margin-right: 0.4em">
 			  
-			  <img src="data:image/png;base64,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" alt="" width="192" height="192">
+			  <img src="data:image/png;base64,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" alt="">
 			  
 				<!--<img src="/img/pokemon/557_0.png">-->
 				<figcaption>
@@ -826,7 +846,13 @@ Dwebble
 		</section>
 		
 
-		
+		<section>
+			<h3>Appearances in Trainer teams</h3>
+
+			<p><input type="checkbox" class="show-trainer-spoilers" data-form="" value="1"> Show trainer names and Pokémon nicknames (these may constitute spoilers)</p>
+
+			
+		</section>
 
 		
 	

@@ -13,7 +13,10 @@ Squirtle
 
 		<style>
 			
-			
+	.trainer-spoiler {
+		display: none;
+	}
+
 		</style>
 		
 <script>
@@ -45,6 +48,16 @@ Squirtle
 		selectTab(tabs, indexToSelect);
 	}
 
+	function showOrHideTrainerSpoilers(box) {
+		const form = box.dataset.form;
+		const display = box.checked ? 'block' : 'none';
+		const affected = Array.from(document.querySelectorAll(`.trainer-spoiler-${form}`));
+
+		for (const elem of affected) {
+			elem.style.display = display;
+		}
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		let tabLists = Array.from(document.querySelectorAll('.tabs'));
 
@@ -63,6 +76,13 @@ Squirtle
 			} else {
 				selectTab(tabs, 0);
 			}
+		}
+
+		const trainerSpoilerTickboxes = Array.from(document.querySelectorAll('.show-trainer-spoilers'));
+
+		for (const box of trainerSpoilerTickboxes) {
+			showOrHideTrainerSpoilers(box);
+			box.addEventListener('change', () => { showOrHideTrainerSpoilers(box) });
 		}
 	});
 
@@ -145,7 +165,7 @@ Squirtle
 		<div style="display: flex; justify-content: space-between; margin-bottom: 1em">
 			<figure style="margin-right: 0.4em">
 			  
-			  <img src="data:image/png;base64,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" alt="" width="192" height="192">
+			  <img src="data:image/png;base64,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" alt="">
 			  
 				<!--<img src="/img/pokemon/007_0.png">-->
 				<figcaption>
@@ -1060,7 +1080,1768 @@ Squirtle
 		</section>
 		
 
-		
+		<section>
+			<h3>Appearances in Trainer teams</h3>
+
+			<p><input type="checkbox" class="show-trainer-spoilers" data-form="" value="1"> Show trainer names and Pokémon nicknames (these may constitute spoilers)</p>
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-1.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 1"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-1.html">Youngster Jonah 1</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 30,
+					
+						no item,
+					
+					
+						male,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Quirky nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>74</td>
+			
+				<td>41</td>
+			
+				<td>51</td>
+			
+				<td>38</td>
+			
+				<td>42</td>
+			
+				<td>51</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						45
+					
+				</td>
+			
+				<td>
+					
+						45
+					
+				</td>
+			
+				<td>
+					
+						45
+					
+				</td>
+			
+				<td>
+					
+						45
+					
+				</td>
+			
+				<td>
+					
+						45
+					
+				</td>
+			
+				<td>
+					
+						45
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-1.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 1"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-1.html">Youngster Jonah 1</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 34,
+					
+						no item,
+					
+					
+						male,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Serious nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>83</td>
+			
+				<td>46</td>
+			
+				<td>58</td>
+			
+				<td>43</td>
+			
+				<td>48</td>
+			
+				<td>57</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						51
+					
+				</td>
+			
+				<td>
+					
+						51
+					
+				</td>
+			
+				<td>
+					
+						51
+					
+				</td>
+			
+				<td>
+					
+						51
+					
+				</td>
+			
+				<td>
+					
+						51
+					
+				</td>
+			
+				<td>
+					
+						51
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-2.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 2"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-2.html">Youngster Jonah 2</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 45,
+					
+						holding <a href="/reborn-db-site/item/leftovers.html">Leftovers</a>,
+					
+					
+						male,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Quirky nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/SKULLBASH.html">Skull Bash</a>
+					<span style="move-list-pp">(10 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/IRONDEFENSE.html">Iron Defense</a>
+					<span style="move-list-pp">(15 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/RAINDANCE.html">Rain Dance</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>108</td>
+			
+				<td>62</td>
+			
+				<td>77</td>
+			
+				<td>57</td>
+			
+				<td>63</td>
+			
+				<td>76</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						67
+					
+				</td>
+			
+				<td>
+					
+						67
+					
+				</td>
+			
+				<td>
+					
+						67
+					
+				</td>
+			
+				<td>
+					
+						67
+					
+				</td>
+			
+				<td>
+					
+						67
+					
+				</td>
+			
+				<td>
+					
+						67
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-3.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 3"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-3.html">Youngster Jonah 3</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 55,
+					
+						holding <a href="/reborn-db-site/item/leftovers.html">Leftovers</a>,
+					
+					
+						male,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Quirky nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/SKULLBASH.html">Skull Bash</a>
+					<span style="move-list-pp">(10 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/IRONDEFENSE.html">Iron Defense</a>
+					<span style="move-list-pp">(15 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/RAINDANCE.html">Rain Dance</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>132</td>
+			
+				<td>77</td>
+			
+				<td>95</td>
+			
+				<td>71</td>
+			
+				<td>79</td>
+			
+				<td>94</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						82
+					
+				</td>
+			
+				<td>
+					
+						82
+					
+				</td>
+			
+				<td>
+					
+						82
+					
+				</td>
+			
+				<td>
+					
+						82
+					
+				</td>
+			
+				<td>
+					
+						82
+					
+				</td>
+			
+				<td>
+					
+						82
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-4.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 4"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-4.html">Youngster Jonah 4</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 14,
+					
+						no item,
+					
+					
+						male,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Docile nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>39</td>
+			
+				<td>21</td>
+			
+				<td>26</td>
+			
+				<td>19</td>
+			
+				<td>21</td>
+			
+				<td>25</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						21
+					
+				</td>
+			
+				<td>
+					
+						21
+					
+				</td>
+			
+				<td>
+					
+						21
+					
+				</td>
+			
+				<td>
+					
+						21
+					
+				</td>
+			
+				<td>
+					
+						21
+					
+				</td>
+			
+				<td>
+					
+						21
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-5.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 5"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-5.html">Youngster Jonah 5</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 82,
+					
+						holding <a href="/reborn-db-site/item/leftovers.html">Leftovers</a>,
+					
+					
+						<abbr title="The Pokémon's gender will be randomly determined at the start of the battle, with the chance of it being male or female being determined by the species's gender ratio, the same as for a wild Pokémon.">random gender</abbr>,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Quirky nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/SKULLBASH.html">Skull Bash</a>
+					<span style="move-list-pp">(10 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/IRONDEFENSE.html">Iron Defense</a>
+					<span style="move-list-pp">(15 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/RAINDANCE.html">Rain Dance</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>193</td>
+			
+				<td>113</td>
+			
+				<td>141</td>
+			
+				<td>105</td>
+			
+				<td>116</td>
+			
+				<td>139</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						85
+					
+				</td>
+			
+				<td>
+					
+						85
+					
+				</td>
+			
+				<td>
+					
+						85
+					
+				</td>
+			
+				<td>
+					
+						85
+					
+				</td>
+			
+				<td>
+					
+						85
+					
+				</td>
+			
+				<td>
+					
+						85
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+				<td>
+					
+						15
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-6.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 6"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-6.html">Youngster Jonah 6</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 20,
+					
+						no item,
+					
+					
+						<abbr title="The Pokémon's gender will be randomly determined at the start of the battle, with the chance of it being male or female being determined by the species's gender ratio, the same as for a wild Pokémon.">random gender</abbr>,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Hardy nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>51</td>
+			
+				<td>27</td>
+			
+				<td>34</td>
+			
+				<td>25</td>
+			
+				<td>28</td>
+			
+				<td>34</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						30
+					
+				</td>
+			
+				<td>
+					
+						30
+					
+				</td>
+			
+				<td>
+					
+						30
+					
+				</td>
+			
+				<td>
+					
+						30
+					
+				</td>
+			
+				<td>
+					
+						30
+					
+				</td>
+			
+				<td>
+					
+						30
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-jonah-6.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Jonah 6"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-jonah-6.html">Youngster Jonah 6</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 21,
+					
+						no item,
+					
+					
+						<abbr title="The Pokémon's gender will be randomly determined at the start of the battle, with the chance of it being male or female being determined by the species's gender ratio, the same as for a wild Pokémon.">random gender</abbr>,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Hardy nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>53</td>
+			
+				<td>28</td>
+			
+				<td>35</td>
+			
+				<td>26</td>
+			
+				<td>29</td>
+			
+				<td>35</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						31
+					
+				</td>
+			
+				<td>
+					
+						31
+					
+				</td>
+			
+				<td>
+					
+						31
+					
+				</td>
+			
+				<td>
+					
+						31
+					
+				</td>
+			
+				<td>
+					
+						31
+					
+				</td>
+			
+				<td>
+					
+						31
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/youngster-terrance.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Youngster Terrance"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/youngster-terrance.html">Youngster Terrance</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 13,
+					
+						no item,
+					
+					
+						<abbr title="The Pokémon's gender will be randomly determined at the start of the battle, with the chance of it being male or female being determined by the species's gender ratio, the same as for a wild Pokémon.">random gender</abbr>,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/torrent.html">Torrent</a>/<a href="/reborn-db-site/ability/rain-dish.html">Rain Dish</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Hardy nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/HYDROPUMP.html">Hydro Pump</a>
+					<span style="move-list-pp">(5 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>36</td>
+			
+				<td>19</td>
+			
+				<td>23</td>
+			
+				<td>18</td>
+			
+				<td>19</td>
+			
+				<td>23</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						19
+					
+				</td>
+			
+				<td>
+					
+						19
+					
+				</td>
+			
+				<td>
+					
+						19
+					
+				</td>
+			
+				<td>
+					
+						19
+					
+				</td>
+			
+				<td>
+					
+						19
+					
+				</td>
+			
+				<td>
+					
+						19
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+		</section>
 
 		
 	

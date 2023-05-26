@@ -13,7 +13,10 @@ Smoochum
 
 		<style>
 			
-			
+	.trainer-spoiler {
+		display: none;
+	}
+
 		</style>
 		
 <script>
@@ -45,6 +48,16 @@ Smoochum
 		selectTab(tabs, indexToSelect);
 	}
 
+	function showOrHideTrainerSpoilers(box) {
+		const form = box.dataset.form;
+		const display = box.checked ? 'block' : 'none';
+		const affected = Array.from(document.querySelectorAll(`.trainer-spoiler-${form}`));
+
+		for (const elem of affected) {
+			elem.style.display = display;
+		}
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		let tabLists = Array.from(document.querySelectorAll('.tabs'));
 
@@ -63,6 +76,13 @@ Smoochum
 			} else {
 				selectTab(tabs, 0);
 			}
+		}
+
+		const trainerSpoilerTickboxes = Array.from(document.querySelectorAll('.show-trainer-spoilers'));
+
+		for (const box of trainerSpoilerTickboxes) {
+			showOrHideTrainerSpoilers(box);
+			box.addEventListener('change', () => { showOrHideTrainerSpoilers(box) });
 		}
 	});
 
@@ -145,7 +165,7 @@ Smoochum
 		<div style="display: flex; justify-content: space-between; margin-bottom: 1em">
 			<figure style="margin-right: 0.4em">
 			  
-			  <img src="data:image/png;base64,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" alt="" width="192" height="192">
+			  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAF70lEQVR4nO3dLXQcVRgG4G85CEC1LtRtXeoKiuKC2zpSBY7iWkejSlRApXXFARLV1iWOOloFyLjEQRxVFDeI2W+Tmex0/ybNgfs8ps3M5GZPp+d779yfSQQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHDeBqs2UFVVH58DljIYrPZf+K2ePgcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP15tLNWPdpZqy76c9D01kV/ALhIg4v+AP8XWd3vbh8Pph2/c/tGREQMrjzNU4PT59Pd7eN20+7ROZIAFO3ti/4A/3XtCn93+2lW9EblPvrz6LXfl0aj+rqrH/5+Dp+WNglA0STAirLPnpW7+uPTiIgYXHk6dcTn0c7a+Pr3I+JsMvBmSQCKJgGW1B69yT774a8x/vN6REQcHf2zULun+v5Gf94ACUDRVJk5/fx4vVHxN26sT73uux+eR0TE+vrliIgYDt95bbv7+39GRGP83z15gyQARVNtZugar5/Xs+cHEXGSBF3PBAcHf0XE1Jng5F6dAwlA0VSV+VURJ+P4XYnQ9QwwfH841w/pmhfwrHA+JABFU0WW10iErPhdo0OLaj87tEmEfkgAiqZqLClHh/qu/O1ngKz0uXaoixnk5UgAiqZaLChnhLtGd7KCzxr1WXbGWBL0SwJQNKtBl9RV4XOmd9hRqDMhXj3ciIiI3/LE93Xl7kqCyf6BbL913aKrTqlJAIomAeaUff+u0Z4ct593NGjzRp0gT57XifDbl/X+gUyClGuEzrrc+OqTWwf5V33/BUgAiiYBLlhnErTOp7zu4KtnEXEyE/zz4zp5Prl1MPWtFEwnASiaKjHDrL5/jurkOH3XKtH2daMXtyMiYjhqtnu0X/flX+1+FhER165da56/+XVEnCTBBx3PDO031DGdBKBongF6lqNBXaM3XZU/Xd3/NiIiqr1vIiJiMKgLeVXVXftMhs2tnyIi4smX9fdlEuTMcsSxZ4E5SACKJgGW1F61maMxh6O6wq/N6MNnX78rCbLyt2V73ifXDwlA0STADNmXHw6nr9PPyr97qa74s/rww/HxTIK2w9H9Rjtte3t7ERFxbepZFiUBKJoEmFP7ff357s/D1qjO1t16dKarD39Gc+I3htfrdg6jToIc739w+fOIODszzGokAEWTADPkjGruAW7vyMoKfW+cAPP24W/e75hZ/nY8OjQ+vzm9mYl3x2uCcnVo9+pRppEAFE0CzGmyd3e8E6zrDW75LJB9+JSjPpPRm3GFz4o/SZK90VyfZ7IW6Itm5feeoMVIAIomAZaUSTBZjXncrNxdM7zpwc39iDip+Pdifer5rv0A+XNP7QRLKv8CJABFUy3m1P49AfkMkG9jyJ1c976Zrw+fHny9P/V4e6dYfPUyIiK2ts9c7x6uQAJQNNVjcVXEyR7ctuyT53xAevJRcyY5K3n7usn148q/uVf/nLVh/efxUd3+1Y+381L3cAUSgKKpHstr/NbI/D0B+ca3rZf1mqDDX3Yi4qSCt7135dbU47s79bPEndtfNI5LgH5JAIpmHmB5jcr76uFGnQjj0ZrDjddX/rZMivTk2YvG11n5Tx1X+XsgASiaKtKTw9H9KuLs6E1qJ0H2/duVfxZ9/35JAIqmiqwoK3977U/O8LaTYFHZ5z81A+ye9UgCUDTVZEW7lz6rIrrXAE3W+oxHhzY3Pnpte5NRnoeX6utbq0FP7TRz73ogASiaeYBz1k6GXOffZfPG+DUR018yTc8kAEXTj+xJ12jQvPJdoV1yfmHr5U/uWY8kAEXzDNCTyQzw+OtZSTCr4rfbzdWl9EsCUDT9yRXt7owa+wJy/D7N+y7Prkqf+wKSGeF+SQCKpoosKSt/e8dW+u6HHyNi6lscuuS9qMbtN062Z5CtCu2HBKBoqsfyqoiIv/943DjY457dKqJ7v4AE6IcEoGiqx+qqjuN9/dued/tFkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADM9C+YguzexN2vPgAAAABJRU5ErkJggg==" alt="">
 			  
 				<!--<img src="/img/pokemon/238_0.png">-->
 				<figcaption>
@@ -861,7 +881,13 @@ Smoochum
 		</section>
 		
 
-		
+		<section>
+			<h3>Appearances in Trainer teams</h3>
+
+			<p><input type="checkbox" class="show-trainer-spoilers" data-form="" value="1"> Show trainer names and Pokémon nicknames (these may constitute spoilers)</p>
+
+			
+		</section>
 
 		
 	

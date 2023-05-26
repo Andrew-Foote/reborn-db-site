@@ -13,7 +13,10 @@ Magby
 
 		<style>
 			
-			
+	.trainer-spoiler {
+		display: none;
+	}
+
 		</style>
 		
 <script>
@@ -45,6 +48,16 @@ Magby
 		selectTab(tabs, indexToSelect);
 	}
 
+	function showOrHideTrainerSpoilers(box) {
+		const form = box.dataset.form;
+		const display = box.checked ? 'block' : 'none';
+		const affected = Array.from(document.querySelectorAll(`.trainer-spoiler-${form}`));
+
+		for (const elem of affected) {
+			elem.style.display = display;
+		}
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		let tabLists = Array.from(document.querySelectorAll('.tabs'));
 
@@ -63,6 +76,13 @@ Magby
 			} else {
 				selectTab(tabs, 0);
 			}
+		}
+
+		const trainerSpoilerTickboxes = Array.from(document.querySelectorAll('.show-trainer-spoilers'));
+
+		for (const box of trainerSpoilerTickboxes) {
+			showOrHideTrainerSpoilers(box);
+			box.addEventListener('change', () => { showOrHideTrainerSpoilers(box) });
 		}
 	});
 
@@ -145,7 +165,7 @@ Magby
 		<div style="display: flex; justify-content: space-between; margin-bottom: 1em">
 			<figure style="margin-right: 0.4em">
 			  
-			  <img src="data:image/png;base64,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" alt="" width="192" height="192">
+			  <img src="data:image/png;base64,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" alt="">
 			  
 				<!--<img src="/img/pokemon/240_0.png">-->
 				<figcaption>
@@ -836,7 +856,13 @@ Magby
 		</section>
 		
 
-		
+		<section>
+			<h3>Appearances in Trainer teams</h3>
+
+			<p><input type="checkbox" class="show-trainer-spoilers" data-form="" value="1"> Show trainer names and Pokémon nicknames (these may constitute spoilers)</p>
+
+			
+		</section>
 
 		
 	

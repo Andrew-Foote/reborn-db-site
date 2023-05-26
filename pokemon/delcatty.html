@@ -13,7 +13,10 @@ Delcatty
 
 		<style>
 			
-			
+	.trainer-spoiler {
+		display: none;
+	}
+
 		</style>
 		
 <script>
@@ -45,6 +48,16 @@ Delcatty
 		selectTab(tabs, indexToSelect);
 	}
 
+	function showOrHideTrainerSpoilers(box) {
+		const form = box.dataset.form;
+		const display = box.checked ? 'block' : 'none';
+		const affected = Array.from(document.querySelectorAll(`.trainer-spoiler-${form}`));
+
+		for (const elem of affected) {
+			elem.style.display = display;
+		}
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		let tabLists = Array.from(document.querySelectorAll('.tabs'));
 
@@ -63,6 +76,13 @@ Delcatty
 			} else {
 				selectTab(tabs, 0);
 			}
+		}
+
+		const trainerSpoilerTickboxes = Array.from(document.querySelectorAll('.show-trainer-spoilers'));
+
+		for (const box of trainerSpoilerTickboxes) {
+			showOrHideTrainerSpoilers(box);
+			box.addEventListener('change', () => { showOrHideTrainerSpoilers(box) });
 		}
 	});
 
@@ -145,7 +165,7 @@ Delcatty
 		<div style="display: flex; justify-content: space-between; margin-bottom: 1em">
 			<figure style="margin-right: 0.4em">
 			  
-			  <img src="data:image/png;base64,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" alt="" width="192" height="192">
+			  <img src="data:image/png;base64,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" alt="">
 			  
 				<!--<img src="/img/pokemon/301_0.png">-->
 				<figcaption>
@@ -985,7 +1005,608 @@ Delcatty
 
 		
 
-		
+		<section>
+			<h3>Appearances in Trainer teams</h3>
+
+			<p><input type="checkbox" class="show-trainer-spoilers" data-form="" value="1"> Show trainer names and Pokémon nicknames (these may constitute spoilers)</p>
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/snow-angel-lumi-3.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Snow Angel Lumi 3"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/snow-angel-lumi-3.html">Snow Angel Lumi 3</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 100,
+					
+						holding <a href="/reborn-db-site/item/magical-seed.html">Magical Seed</a>,
+					
+					
+						<abbr title="The Pokémon's gender will be randomly determined at the start of the battle, with the chance of it being male or female being determined by the species's gender ratio, the same as for a wild Pokémon.">random gender</abbr>,
+					
+					255 friendship
+					<br>
+					<a href="/reborn-db-site/ability/normalize.html">Normalize</a>;
+					Adamant nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/COSMICPOWER.html">Cosmic Power</a>
+					<span style="move-list-pp">(32 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/BATONPASS.html">Baton Pass</a>
+					<span style="move-list-pp">(64 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/WISH.html">Wish</a>
+					<span style="move-list-pp">(16 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/RETURN.html">Return</a>
+					<span style="move-list-pp">(32 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>344</td>
+			
+				<td>182</td>
+			
+				<td>198</td>
+			
+				<td>216</td>
+			
+				<td>131</td>
+			
+				<td>178</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						<span class="good-stat">252</span>
+					
+				</td>
+			
+				<td>
+					
+						<span class="bad-stat">0</span>
+					
+				</td>
+			
+				<td>
+					
+						128
+					
+				</td>
+			
+				<td>
+					
+						<span class="bad-stat">0</span>
+					
+				</td>
+			
+				<td>
+					
+						<span class="bad-stat">0</span>
+					
+				</td>
+			
+				<td>
+					
+						128
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						<span class="good-stat">31</span>
+					
+				</td>
+			
+				<td>
+					
+						<span class="good-stat">31</span>
+					
+				</td>
+			
+				<td>
+					
+						<span class="good-stat">31</span>
+					
+				</td>
+			
+				<td>
+					
+						<span class="good-stat">31</span>
+					
+				</td>
+			
+				<td>
+					
+						<span class="good-stat">31</span>
+					
+				</td>
+			
+				<td>
+					
+						<span class="good-stat">31</span>
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/meteor-dame-gretchen-1.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Meteor Dame Gretchen 1"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/meteor-dame-gretchen-1.html">Meteor Dame Gretchen 1</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 40,
+					
+						no item,
+					
+					
+						<abbr title="The Pokémon's gender will be randomly determined at the start of the battle, with the chance of it being male or female being determined by the species's gender ratio, the same as for a wild Pokémon.">random gender</abbr>,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/cute-charm.html">Cute Charm</a>/<a href="/reborn-db-site/ability/normalize.html">Normalize</a>/<a href="/reborn-db-site/ability/wonder-skin.html">Wonder Skin</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Hardy nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/ATTRACT.html">Attract</a>
+					<span style="move-list-pp">(15 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/DOUBLESLAP.html">Double Slap</a>
+					<span style="move-list-pp">(10 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>116</td>
+			
+				<td>67</td>
+			
+				<td>67</td>
+			
+				<td>87</td>
+			
+				<td>59</td>
+			
+				<td>59</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						60
+					
+				</td>
+			
+				<td>
+					
+						60
+					
+				</td>
+			
+				<td>
+					
+						60
+					
+				</td>
+			
+				<td>
+					
+						60
+					
+				</td>
+			
+				<td>
+					
+						60
+					
+				</td>
+			
+				<td>
+					
+						60
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+
+			<div style="display: flex; justify-content: space-evenly; margin-bottom: 1em">
+				<figure style="margin-right: 0.4em" class="trainer-spoiler-">
+					<a href="/reborn-db-site/trainer/meteor-dame-gretchen-2.html">
+						<img
+							src="data:image/png;base64,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"
+							alt="Meteor Dame Gretchen 2"
+						>
+					</a>
+					<figcaption>
+						<b><a href="/reborn-db-site/trainer/meteor-dame-gretchen-2.html">Meteor Dame Gretchen 2</a></b>
+						
+					</figcaption>
+				</figure>
+
+				<div style="display: flex; flex-direction: column">
+					<div>
+					Level 48,
+					
+						no item,
+					
+					
+						<abbr title="The Pokémon's gender will be randomly determined at the start of the battle, with the chance of it being male or female being determined by the species's gender ratio, the same as for a wild Pokémon.">random gender</abbr>,
+					
+					70 friendship
+					<br>
+					<a href="/reborn-db-site/ability/cute-charm.html">Cute Charm</a>/<a href="/reborn-db-site/ability/normalize.html">Normalize</a>/<a href="/reborn-db-site/ability/wonder-skin.html">Wonder Skin</a> (<abbr title="The Pokémon will have one of these abilities randomly chosen for it at the start of the battle.">?</abbr>);
+					Hardy nature
+					</div>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						
+	<figure class="move-list-fig">
+		<figcaption>Moves</figcaption>
+		<ul class="move-list">
+			
+				<li>
+					<a href="/reborn-db-site/move/ATTRACT.html">Attract</a>
+					<span style="move-list-pp">(15 PP)</span>
+				</li>
+			
+				<li>
+					<a href="/reborn-db-site/move/DOUBLESLAP.html">Double Slap</a>
+					<span style="move-list-pp">(10 PP)</span>
+				</li>
+			
+		</ul>
+	</figure>
+
+						
+	<table class="stat-table">
+		<caption>Stats</caption>
+		<tr>
+			<th rowspan="2"></th>
+			
+				<th>
+					
+						HP
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Attack">Atk</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Defense">Def</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Speed">Spe</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Attack">SpA</abbr>
+					
+				</th>
+			
+				<th>
+					
+						<abbr title="Special Defense">SpD</abbr>
+					
+				</th>
+			
+		</tr>
+		<tr>
+			
+				<td>138</td>
+			
+				<td>80</td>
+			
+				<td>80</td>
+			
+				<td>104</td>
+			
+				<td>71</td>
+			
+				<td>71</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>EVs</th>
+			
+				<td>
+					
+						72
+					
+				</td>
+			
+				<td>
+					
+						72
+					
+				</td>
+			
+				<td>
+					
+						72
+					
+				</td>
+			
+				<td>
+					
+						72
+					
+				</td>
+			
+				<td>
+					
+						72
+					
+				</td>
+			
+				<td>
+					
+						72
+					
+				</td>
+			
+		</tr>
+		<tr class="stat-table-minor">
+			<th>IVs</th>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+				<td>
+					
+						10
+					
+				</td>
+			
+		</tr>
+	</table>
+
+					</div>
+				</div>
+			</div>
+
+				
+
+			
+		</section>
 
 		
 	
